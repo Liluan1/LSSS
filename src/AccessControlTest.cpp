@@ -1,9 +1,9 @@
 #include "AccessControlTest.h"
 #include "AccessControlException.h"
 
-const char *TEST_PAIRING_PARAMETERS_PATH_a_80_256 = "/root/lsss/params/a_80_256.properties";
-const char *TEST_PAIRING_PARAMETERS_PATH_a1_2_128 = "/root/lsss/params/a1_2_128.properties";
-const char *TEST_PAIRING_PARAMETERS_PATH_a1_3_128 = "/root/lsss/params/a1_3_128.properties";
+const char *TEST_PAIRING_PARAMETERS_PATH_a_80_256 = "../params/a_80_256.properties";
+const char *TEST_PAIRING_PARAMETERS_PATH_a1_2_128 = "../params/a1_2_128.properties";
+const char *TEST_PAIRING_PARAMETERS_PATH_a1_3_128 = "../params/a1_3_128.properties";
 void AccessControlTest::runAllTests(pbc_param_t param) {
   pairing_t pairing;
   pairing_init_pbc_param(pairing, param);
