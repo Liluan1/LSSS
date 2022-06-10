@@ -20,11 +20,12 @@ class LSSSPolicyEngine {
      * @param accessControlParameter rootAccessTreeNode, accessPolicy, lsssMatrix and rhosParameter
      * @return
      */
-    std::unordered_map<std::string, element_t> secretSharing(pairing_t pairing, element_t secret, AccessControlParameter *accessControlParameter);
+    virtual std::unordered_map<std::string, element_t> secretSharing(pairing_t pairing, element_t secret,   
+      AccessControlParameter *accessControlParameter) = 0;
 
-    std::unordered_map<std::string, element_t> reconstructOmegas(pairing_t pairing, std::vector<std::string> attributes, 
-      AccessControlParameter *accessControlParameter);
+    virtual std::unordered_map<std::string, element_t> reconstructOmegas(pairing_t pairing, 
+      std::vector<std::string> attributes, AccessControlParameter *accessControlParameter) = 0;
 
-  private:
-    double *get_identity_vector(int length);
+    virtual AccessControlParameter *generateAccessControl(const std::vector<std::vector<int>> &accessPolicy, 
+      const std::vector<std::string> &rhos) = 0;
 };

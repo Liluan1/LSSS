@@ -1,5 +1,7 @@
 #include "AccessControlTest.h"
 #include "AccessControlException.h"
+#include "LSSSDKW21.h"
+#include "LSSSLW10Engine.h"
 
 const char *TEST_PAIRING_PARAMETERS_PATH_a_80_256 = "../params/a_80_256.properties";
 const char *TEST_PAIRING_PARAMETERS_PATH_a1_2_128 = "../params/a1_2_128.properties";
@@ -40,20 +42,20 @@ void AccessControlTest::try_valid_access_policy(pairing_t pairing, int testIndex
     element_init_Zr(secret, pairing);
     element_random(secret);
     // std::cout << "Generated Secret s = " << element_printf("%d", secret) << std::endl;
-    std::unordered_map<std::string, element_t> lambdaElementsMap = accessControlEngine->secretSharing(pairing, secret, accessControlParameter);
+    std::unordered_map<std::string, element_t> lambdaElementsMap = accessControlEngine->secretSharing(pairing, secret, 
+      accessControlParameter);
 
     //Secret Reconstruction
-    std::unordered_map<std::string, element_t> omegaElementsMap = accessControlEngine->reconstructOmegas(pairing, attributeSet, accessControlParameter);
+    std::unordered_map<std::string, element_t> omegaElementsMap = accessControlEngine->reconstructOmegas(pairing, 
+      attributeSet, accessControlParameter);
     element_t reconstructedSecret;
     element_init_Zr(reconstructedSecret, pairing);
     element_set0(reconstructedSecret);
-    for (std::string eachAttribute : attributeSet) {
-      if (omegaElementsMap.find(eachAttribute) != omegaElementsMap.end()) {
+    for (const auto &pair : omegaElementsMap) {
         element_t e;
         element_init_same_as(e, reconstructedSecret);
-        element_mul_zn(e, lambdaElementsMap.at(eachAttribute), omegaElementsMap.at(eachAttribute));
+        element_mul_zn(e, lambdaElementsMap.at(pair.first), omegaElementsMap.at(pair.first));
         element_add(reconstructedSecret, reconstructedSecret, e);
-      }
     }
     // std::cout << "Reconstruct Secret s = " << element_printf("%d", reconstructedSecret) << std::endl;
     if (element_cmp(reconstructedSecret, secret) != 0) {
@@ -98,6 +100,19 @@ void AccessControlTest::try_invalid_access_policy(pairing_t pairing, int testInd
 
 void AccessControlTest::testLSSSLW10Engine() {
   this->accessControlEngine = new LSSSLW10Engine();
+  char param[1024];
+  pbc_param_t pbc_param;
+  FILE* file = fopen(TEST_PAIRING_PARAMETERS_PATH_a_80_256, "r");
+  assert(file != NULL);
+  size_t count = fread(param, 1, 1024, file);
+  fclose(file);
+  assert(count != 0);
+  pbc_param_init_set_buf(pbc_param, param, count);
+  runAllTests(pbc_param);
+}
+
+void AccessControlTest::testLSSSDKW21() {
+  this->accessControlEngine = new LSSSDKW21();
   char param[1024];
   pbc_param_t pbc_param;
   FILE* file = fopen(TEST_PAIRING_PARAMETERS_PATH_a_80_256, "r");

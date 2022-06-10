@@ -17,6 +17,7 @@ class AccessControlTest {
   void runAllTests(pbc_param_t param);
 
   void testLSSSLW10Engine();
+  void testLSSSDKW21();
 
  private: 
   void try_valid_access_policy(pairing_t pairing, int testIndex, const std::vector<std::vector<int>> accessPolicy, 
@@ -24,5 +25,5 @@ class AccessControlTest {
 
   void try_invalid_access_policy(pairing_t pairing, int testIndex, const std::vector<std::vector<int>> accessPolicy, const std::vector<std::string> rhos, const std::vector<std::string> attributeSet) ;
 
-  LSSSLW10Engine *accessControlEngine;
+  LSSSPolicyEngine *accessControlEngine;
 };

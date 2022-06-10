@@ -25,5 +25,12 @@ class LSSSLW10Engine: public LSSSPolicyEngine {
      * @param rhos Leaf node value in string array
      * @return rootAccessTreeNode, accessPolicy, lsssMatrix and rhosParameter
      */
-    AccessControlParameter *generateAccessControl(std::vector<std::vector<int>> accessPolicy, std::vector<std::string> rhos);
+    AccessControlParameter *generateAccessControl(const std::vector<std::vector<int>> &accessPolicy, 
+      const std::vector<std::string> &rhos);
+
+    std::unordered_map<std::string, element_t> secretSharing(pairing_t pairing, element_t secret, 
+      AccessControlParameter *accessControlParameter);
+
+    std::unordered_map<std::string, element_t> reconstructOmegas(pairing_t pairing, std::vector<std::string> attributes, 
+      AccessControlParameter *accessControlParameter);
 };

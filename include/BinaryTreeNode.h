@@ -15,12 +15,10 @@ class BinaryTreeNode {
         AND, OR, LEAF,
     };
 
-    std::list<int> getVector() {
-        return vector;
-    }
-    void setVector( std::list<int> vector) {
-        this->vector = vector;
-    }
+    std::vector<int> getVector1() { return vector1; }
+    void setVector1(std::vector<int> vector) { this->vector1 = vector; }
+    std::vector<int> getVector0() { return vector0; }
+    void setVector0(std::vector<int> vector) { this->vector0 = vector; }
     BinaryTreeNode *getParent() {
         return this->parent;
     }
@@ -77,5 +75,6 @@ class BinaryTreeNode {
     BinaryTreeNode *parent;
     BinaryTreeNode *left;
     BinaryTreeNode *right;
-    std::list<int> vector;
+    std::vector<int> vector1;
+    std::vector<int> vector0;
 };
